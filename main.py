@@ -222,3 +222,17 @@ shap_values = explainer.shap_values(X_test)
 
 # %% [code] {"execution":{"iopub.status.busy":"2024-02-03T19:14:05.080250Z","iopub.execute_input":"2024-02-03T19:14:05.080682Z","iopub.status.idle":"2024-02-03T19:14:05.335552Z","shell.execute_reply.started":"2024-02-03T19:14:05.080648Z","shell.execute_reply":"2024-02-03T19:14:05.334174Z"}}
 shap.summary_plot(shap_values, X_test)
+
+# print(shap_values)
+
+# print("What are these")
+# print(np.abs(shap_values.values).mean(axis=0))
+
+vals= np.abs(shap_values).mean(0)
+feature_importance = pd.DataFrame(list(zip(X_train.columns, sum(vals))), columns=['col_name','feature_importance_vals'])
+
+# feature_importance.sort_values(by='feature_importance_vals',ascending=False,inplace=True)
+print(feature_importance.head())
+print(feature_importance.shape)
+feature_importance.sort_values(by='feature_importance_vals',ascending=False,inplace=True)
+print(feature_importance.head())
