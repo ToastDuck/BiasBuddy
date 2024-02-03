@@ -44,7 +44,7 @@ import graphviz
 
 # %% [code] {"execution":{"iopub.status.busy":"2024-02-03T19:13:08.314290Z","iopub.execute_input":"2024-02-03T19:13:08.314644Z","iopub.status.idle":"2024-02-03T19:13:08.354451Z","shell.execute_reply.started":"2024-02-03T19:13:08.314615Z","shell.execute_reply":"2024-02-03T19:13:08.353269Z"}}
 # This dataframe contains gender, age and race which are all protected variables
-data= pd.read_csv('/kaggle/input/salary-by-job-title-and-country/Salary.csv', delimiter = ",")
+data= pd.read_csv("Salary.csv", delimiter = ",")
 data.head()
 # data.dtypes
 
