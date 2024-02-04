@@ -12,4 +12,6 @@ The feature analysis script requires the following dependencies:
 - pip install graphviz
 
 The ml script requires the following dependencies:
+- pip install llama-cpp-python
+- The used model: TheBloke llama-2-7b-chat.Q4_K_M.gguf
 
