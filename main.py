@@ -168,3 +168,30 @@ total_importance = data_sum.iloc[1]
 feature_importance['percentages'] = round(feature_importance['feature_importance_vals'] / total_importance,2)
 
 print(feature_importance.head())
+
+# Prompt generator:
+feature_names = feature_importance['col_name'].values
+feature_percentages = feature_importance['percentages'].values
+
+for feature in feature_names:
+    print(feature)
+
+for i in range(len(feature_percentages)):
+    feature_percentages[i] = int(feature_percentages[i] * 100)
+
+for percentage in feature_percentages:
+    print(percentage)
+
+feature_importance_string = "Importance Scores: "
+for i in range(len(feature_percentages)):
+    feature_importance_string += f"{feature_names[i]}" + " " + f"{feature_percentages[i]}%, "
+
+
+prompt = "A machine learning model ranks how important some features are to its predictions based on their 'importance score'. Use the following importance scores to determine whether or not the model is biased on the metric of gender. "
+prompt += feature_importance_string
+# print(prompt)
+
+# Above is an example of parametarizing everything
+# For the demo we might stick to the hardcoded prompt since I dont have time to change the feature names which is messing up the model
+hardcoded_prompt = "A machine learning model ranks how important some features are to its predictions based on their 'importance score'. Use the following importance scores to determine whether or not the model is biased on the metric of gender.  Importance scores: years of experience = 59%, age = 18%, education level = 14%, gender = 6%, senior = 3%."
+print(hardcoded_prompt)
