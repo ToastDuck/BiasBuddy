@@ -12,4 +12,4 @@ The feature analysis script requires the following dependencies:
 - pip install graphviz
 
 The ml script requires the following dependencies:
-- pip install replicate
+
