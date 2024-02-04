@@ -122,31 +122,6 @@ one_hot_encoded_training_predictors = pd.get_dummies(X_train)
 one_hot_encoded_test_predictors = pd.get_dummies(X_test)
 
 # %% [markdown]
-# # Testing one hot encoding + dropping categoricals
-
-# %% [markdown]
-# # Comparing one hot encoded (categoriacal data)
-
-# %% [code] {"execution":{"iopub.status.busy":"2024-02-03T19:13:08.421151Z","iopub.execute_input":"2024-02-03T19:13:08.421779Z","iopub.status.idle":"2024-02-03T19:13:08.427463Z","shell.execute_reply.started":"2024-02-03T19:13:08.421737Z","shell.execute_reply":"2024-02-03T19:13:08.426173Z"}}
-# from sklearn.model_selection import cross_val_score
-# from sklearn.ensemble import RandomForestRegressor
-
-# def get_mae(X, y):
-#     # multiple by -1 to make positive MAE score instead of neg value returned as sklearn convention
-#     return -1 * cross_val_score(RandomForestRegressor(50), 
-#                                 X, y, 
-#                                 scoring = 'neg_mean_absolute_error').mean()
-
-# predictors_without_categoricals = X_train.select_dtypes(exclude=['object'])
-
-# mae_without_categoricals = get_mae(predictors_without_categoricals, y_train)
-
-# mae_one_hot_encoded = get_mae(one_hot_encoded_training_predictors, y_train)
-
-# print('Mean Absolute Error when Dropping Categoricals: ' + str(int(mae_without_categoricals)))
-# print('Mean Abslute Error with One-Hot Encoding: ' + str(int(mae_one_hot_encoded)))
-
-# %% [markdown]
 # # Fitting and evaluating the model
 
 # %% [code] {"execution":{"iopub.status.busy":"2024-02-03T19:13:08.429298Z","iopub.execute_input":"2024-02-03T19:13:08.429987Z","iopub.status.idle":"2024-02-03T19:13:08.943073Z","shell.execute_reply.started":"2024-02-03T19:13:08.429929Z","shell.execute_reply":"2024-02-03T19:13:08.941916Z"}}
@@ -160,58 +135,6 @@ y_pred = rf.predict(X_test)
 # Checking the accuracy of the model
 accuracy = accuracy_score(y_test, y_pred)
 print("Accuracy:", accuracy)
-
-# %% [markdown]
-# # Visualizing the Data
-
-# %% [code] {"execution":{"iopub.status.busy":"2024-02-03T19:13:08.944671Z","iopub.execute_input":"2024-02-03T19:13:08.945134Z","iopub.status.idle":"2024-02-03T19:13:09.037306Z","shell.execute_reply.started":"2024-02-03T19:13:08.945068Z","shell.execute_reply":"2024-02-03T19:13:09.036356Z"}}
-# Export the first three decision trees from the forest
-
-# for i in range(3):
-#     tree = rf.estimators_[i]
-#     dot_data = export_graphviz(tree,
-#                                feature_names=X_train.columns,  
-#                                filled=True,  
-#                                max_depth=2, 
-#                                impurity=False, 
-#                                proportion=True)
-#     graph = graphviz.Source(dot_data)
-#     display(graph)
-
-# %% [markdown]
-# # Confusion Matrix
-
-# %% [code] {"execution":{"iopub.status.busy":"2024-02-03T19:13:09.038787Z","iopub.execute_input":"2024-02-03T19:13:09.039160Z","iopub.status.idle":"2024-02-03T19:13:09.044235Z","shell.execute_reply.started":"2024-02-03T19:13:09.039121Z","shell.execute_reply":"2024-02-03T19:13:09.043160Z"}}
-# param_dist = {'n_estimators': randint(50,500),
-#               'max_depth': randint(1,20)}
-
-# # Create a random forest classifier
-# rf = RandomForestClassifier()
-
-# # Use random search to find the best hyperparameters
-# rand_search = RandomizedSearchCV(rf, 
-#                                  param_distributions = param_dist, 
-#                                  n_iter=5, 
-#                                  cv=5)
-
-# # Fit the random search object to the data
-# rand_search.fit(X_train, y_train)
-
-# %% [code]
-# Create a variable for the best model
-# best_rf = rand_search.best_estimator_
-
-# # Print the best hyperparameters
-# print('Best hyperparameters:',  rand_search.best_params_)
-
-# # Generate predictions with the best model
-# y_pred = best_rf.predict(X_test)
-
-# # Create the confusion matrix
-# cm = confusion_matrix(y_test, y_pred)
-
-# ConfusionMatrixDisplay(confusion_matrix=cm).plot();
-# # HOW TO READ A CONFUSION MATRIX???
 
 # %% [markdown]
 # # Setting up SHAP explainer
@@ -235,4 +158,13 @@ feature_importance = pd.DataFrame(list(zip(X_train.columns, sum(vals))), columns
 print(feature_importance.head())
 print(feature_importance.shape)
 feature_importance.sort_values(by='feature_importance_vals',ascending=False,inplace=True)
+print(feature_importance.head())
+
+data_sum = feature_importance.sum()
+print(data_sum.head())
+total_importance = data_sum.iloc[1]
+# # Convert SHAP values to percentages 
+# ROUNDED TO TWO DECIMAL PLACE
+feature_importance['percentages'] = round(feature_importance['feature_importance_vals'] / total_importance,2)
+
 print(feature_importance.head())
