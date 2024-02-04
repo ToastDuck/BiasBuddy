@@ -1,7 +1,7 @@
 # BIAS BUDDY
 Hackathon project for QHACKS 2024
 
-This project requires the following dependencies:
+The feature analysis script requires the following dependencies:
 - pip install numpy
 - pip install pandas
 - pip install matplotlib
@@ -10,3 +10,6 @@ This project requires the following dependencies:
 - pip install scikit- learn
 - pip install ipython
 - pip install graphviz
+
+The ml script requires the following dependencies:
+- pip install replicate
